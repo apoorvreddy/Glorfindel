@@ -3,8 +3,9 @@ package tree_match;
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
 /**
  * Created by apoorv on 3/3/16.
  */
@@ -36,37 +37,50 @@ public class TreeMatch {
     }
 
 
-    public static <T extends Number> T computeCPPMatrix(IndexedWord node1, IndexedWord node2,
-                                                        SemanticGraph tree1, SemanticGraph tree2,
-                                                        int[][] cdpMatrix, T[][] cppMatrix){
+    public static <T extends Number> void computeCPPMatrix(SemanticGraph tree1, SemanticGraph tree2,
+                                                        int[][] cdpMatrix, int[][] cppMatrix){
 
+        for(int i=0; i<tree1.size(); i++){
+            for(int j=0; j<tree2.size(); j++){
+                IndexedWord nodei = tree1.getNodeByIndex(i+1);
+                IndexedWord nodej = tree2.getNodeByIndex(j+1);
 
-        int node1Pos = node1.index();
-        int node2Pos = node2.index();
+                cppMatrix[i][j] = cdpMatrix[i][j];
+                List<NodePair> childPairList = generateNodePairList(nodei, nodej, tree1, tree2);
 
-        if(node1.word().equals(node2.word())){
+                for(int k=0; k<childPairList.size() - 1; k++){
+                    for(int l=k+1; l<childPairList.size(); l++){
+                        NodePair nodePair1 = childPairList.get(k);
+                        NodePair nodePair2 = childPairList.get(l);
 
-            cppMatrix[node1Pos][node2Pos] = (T) Integer.valueOf(cdpMatrix[node1Pos][node2Pos]);
+                        int x, y;
+                        x = cdpMatrix[nodePair1.node1.index() - 1][nodePair1.node2.index() - 1];
+                        y = cdpMatrix[nodePair2.node1.index() - 1][nodePair2.node2.index() - 1];
 
-            for(IndexedWord childNode1: tree1.getChildList(node1)){
-                for(IndexedWord childNode2: tree2.getChildList(node2)){
-
-//                    cppMatrix
-
+                        cppMatrix[i][j] += 1 + x + y + x*y;
+                    }
                 }
             }
-
         }
-
-        else{
-            cppMatrix[node1Pos][node2Pos] = (T) Integer.valueOf(0);
-        }
-
-
-        return (T) Integer.valueOf(0);
     }
 
 
+    private static List<NodePair> generateNodePairList(IndexedWord node1, IndexedWord node2,
+                                                       SemanticGraph tree1, SemanticGraph tree2){
+
+        List<NodePair> nodePairList = new ArrayList<NodePair>();
+
+        for(IndexedWord child1: tree1.getChildList(node1))
+            for(IndexedWord child2: tree2.getChildList(node2)){
+
+                if (child1.word().equals(child2.word())){
+                    NodePair nodePair = new NodePair(child1, child2);
+                    nodePairList.add(nodePair);
+                }
+            }
+
+        return nodePairList;
+    }
 
     public static <T extends Number> T[][] initializeMatrix(T[][] matrix){
         Arrays.fill(matrix, 0);
@@ -102,6 +116,43 @@ public class TreeMatch {
             }
         }
         return cdpMatrix;
+    }
+
+    public static double computeKernel(SemanticGraph tree1, SemanticGraph tree2){
+
+        double kernel = 0;
+
+        int[][] cdpMatrix = TreeMatch.initializeCDPMatrix(tree1, tree2);
+        int cdp = TreeMatch.computeCDPMatrix(tree1.getFirstRoot(),
+                tree2.getFirstRoot(),
+                tree1,
+                tree2,
+                cdpMatrix);
+
+        int[][] cppMatrix = new int[tree1.size()][tree2.size()];
+        TreeMatch.computeCPPMatrix(tree1, tree2, cdpMatrix, cppMatrix);
+
+        for(int i=0; i<cppMatrix.length; i++){
+            for(int j=0; j<cppMatrix[0].length; j++){
+
+                if(cppMatrix[i][j] != 0){
+                    kernel += 1 + cppMatrix[i][j];
+                }
+            }
+        }
+        return kernel;
+    }
+
+    public static double computeNormalizedKernel(SemanticGraph tree1, SemanticGraph tree2){
+
+        double kernel1, kernel2, normKernel;
+
+        kernel1 = computeKernel(tree1, tree1);
+        kernel2 = computeKernel(tree2, tree2);
+        normKernel = computeKernel(tree1, tree2);
+        normKernel = normKernel/(Math.sqrt(1 + kernel1 * kernel2));
+
+        return normKernel;
     }
 
 }
