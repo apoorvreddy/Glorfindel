@@ -1,7 +1,12 @@
 package tree_match;
 
 import edu.stanford.nlp.ling.IndexedWord;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
+import edu.stanford.nlp.util.CoreMap;
+import text_util.PipelineProvider;
+import text_util.TextAnnotator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,4 +185,21 @@ public class TreeMatch {
         return normKernel;
     }
 
+
+    public static double computeNormalizedKernel(String text1, String text2, PipelineProvider pipelineProvider){
+
+        TextAnnotator annotator1 = new TextAnnotator(text1, pipelineProvider.getPipeline());
+        TextAnnotator annotator2 = new TextAnnotator(text2, pipelineProvider.getPipeline());
+
+        CoreMap sentence1 = annotator1.getSentences().get(0);
+        CoreMap sentence2 = annotator2.getSentences().get(0);
+
+        SemanticGraph depGraph1 = sentence1.get(
+                SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class);
+
+        SemanticGraph depGraph2 = sentence2.get(
+                SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class);
+
+        return computeNormalizedKernel(depGraph1, depGraph2);
+    }
 }

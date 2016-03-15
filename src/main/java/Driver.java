@@ -16,8 +16,8 @@ public class Driver {
 
     public static void main(String[] args){
 
-        String test1 = "A fat cat was chased by a dog";
-        String test2 = "A cat with a red collar was chased two days ago by a fat dog";
+        String test1 = "A fat cat was chased by the dog.";
+        String test2 = "A cat was chased two days ago by a fat dog.";
 
         TextAnnotator annotator1 = new TextAnnotator(test1, pipelineProvider.getPipeline());
         TextAnnotator annotator2 = new TextAnnotator(test2, pipelineProvider.getPipeline());
