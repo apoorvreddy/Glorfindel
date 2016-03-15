@@ -20,12 +20,13 @@ public class TreeMatch {
 
         if (cdpMatrix[node1Pos][node2Pos] == -1){
 
-            cdpMatrix[node1Pos][node2Pos] = 0;
-            if(node1.word().equals(node2.word())){
+            cdpMatrix[node1Pos][node2Pos] = nodeScore(node1, node2);
 
+            if(testWordEquality(node1, node2)){
+                cdpMatrix[node1Pos][node2Pos] = nodeScore(node1, node2);
                 for(IndexedWord child1: tree1.getChildList(node1)){
                     for(IndexedWord child2: tree2.getChildList(node2)){
-                        if(child1.word().equals(child2.word()))
+                        if(testWordEquality(child1, child2))
                             cdpMatrix[node1Pos][node2Pos] += 1 + computeCDPMatrix(child1, child2, tree1, tree2, cdpMatrix);
                     }
                 }
@@ -36,6 +37,30 @@ public class TreeMatch {
         return cdpMatrix[node1Pos][node2Pos];
     }
 
+    private static int nodeScore(IndexedWord node1, IndexedWord node2){
+
+        int score = 0;
+        if(testWordEquality(node1, node2))
+            score++;
+        if(testLemmaEquality(node1, node2))
+            score++;
+        if(testStrictPosEquality(node1, node2))
+            score++;
+        return score;
+    }
+
+
+    private static boolean testWordEquality(IndexedWord node1, IndexedWord node2){
+        return node1.word().toLowerCase().equals(node2.word().toLowerCase());
+    }
+
+    private static boolean testStrictPosEquality(IndexedWord node1, IndexedWord node2){
+        return node1.tag().equals(node2.tag());
+    }
+
+    private static boolean testLemmaEquality(IndexedWord node1, IndexedWord node2){
+        return node1.lemma().equals(node2.lemma());
+    }
 
     public static <T extends Number> void computeCPPMatrix(SemanticGraph tree1, SemanticGraph tree2,
                                                         int[][] cdpMatrix, int[][] cppMatrix){
