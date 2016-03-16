@@ -1,4 +1,4 @@
-package tree_match;
+package similarity_measures.tree_match;
 
 import edu.stanford.nlp.ling.IndexedWord;
 

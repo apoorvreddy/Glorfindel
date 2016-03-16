@@ -7,7 +7,7 @@ import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
 import text_util.TextAnnotator;
 import text_util.PipelineProvider;
-import tree_match.TreeMatch;
+import similarity_measures.tree_match.TreeMatch;
 
 
 public class Driver {

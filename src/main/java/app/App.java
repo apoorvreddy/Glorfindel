@@ -14,7 +14,7 @@ public class App extends Application<AppConfiguration> {
     public static PipelineProvider pipelineProvider = PipelineProvider.getInstance();
 
     public static void main(String[] args) throws Exception {
-        PipelineProvider.getPipeline();
+        beforeStart();
         new App().run(args);
     }
 
@@ -38,5 +38,9 @@ public class App extends Application<AppConfiguration> {
 
     public static PipelineProvider getPipelineProvider() {
         return pipelineProvider;
+    }
+
+    public static void beforeStart(){
+        PipelineProvider.getPipeline();
     }
 }

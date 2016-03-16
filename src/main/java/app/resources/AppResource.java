@@ -11,7 +11,7 @@ import com.google.common.base.Optional;
 import javax.ws.rs.*;
 
 import com.codahale.metrics.annotation.Timed;
-import tree_match.TreeMatch;
+import similarity_measures.tree_match.TreeMatch;
 
 import javax.ws.rs.core.MediaType;
 import java.util.concurrent.atomic.AtomicLong;
@@ -50,6 +50,8 @@ public class AppResource {
         String text1 = requestBody.getText1();
         String text2 = requestBody.getText2();
         String similarityFunction = requestBody.getSimilarityFunction();
+
+
 
         double score = TreeMatch.computeNormalizedKernel(text1, text2, App.getPipelineProvider());
         return new AppResponse(

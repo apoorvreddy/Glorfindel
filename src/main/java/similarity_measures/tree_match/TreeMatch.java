@@ -1,19 +1,19 @@
-package tree_match;
+package similarity_measures.tree_match;
 
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
+import similarity_measures.SimilarityMeasure;
 import text_util.PipelineProvider;
 import text_util.TextAnnotator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 /**
  * Created by apoorv on 3/3/16.
  */
-public class TreeMatch {
+public class TreeMatch implements SimilarityMeasure{
 
 
     public static int computeCDPMatrix(IndexedWord node1, IndexedWord node2, SemanticGraph tree1, SemanticGraph tree2,
@@ -195,5 +195,16 @@ public class TreeMatch {
                 SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class);
 
         return computeNormalizedKernel(depGraph1, depGraph2);
+    }
+
+    public double exec(String text1, String text2, List<Object> args) {
+
+        if(args.get(0) instanceof PipelineProvider){
+            return computeNormalizedKernel(text1, text2, (PipelineProvider) args.get(0));
+        }
+        else{
+
+            return 0;
+        }
     }
 }
