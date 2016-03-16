@@ -1,7 +1,6 @@
 package tree_match;
 
 import edu.stanford.nlp.ling.IndexedWord;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
@@ -67,7 +66,7 @@ public class TreeMatch {
         return node1.lemma().equals(node2.lemma());
     }
 
-    public static <T extends Number> void computeCPPMatrix(SemanticGraph tree1, SemanticGraph tree2,
+    public static  void computeCPPMatrix(SemanticGraph tree1, SemanticGraph tree2,
                                                         int[][] cdpMatrix, int[][] cppMatrix){
 
         for(int i=0; i<tree1.size(); i++){
@@ -112,11 +111,6 @@ public class TreeMatch {
         return nodePairList;
     }
 
-    public static <T extends Number> T[][] initializeMatrix(T[][] matrix){
-        Arrays.fill(matrix, 0);
-        return matrix;
-    }
-
 
     public static int[][] initializeCDPMatrix(SemanticGraph tree1, SemanticGraph tree2){
 
@@ -153,7 +147,7 @@ public class TreeMatch {
         double kernel = 0;
 
         int[][] cdpMatrix = TreeMatch.initializeCDPMatrix(tree1, tree2);
-        int cdp = TreeMatch.computeCDPMatrix(tree1.getFirstRoot(),
+        TreeMatch.computeCDPMatrix(tree1.getFirstRoot(),
                 tree2.getFirstRoot(),
                 tree1,
                 tree2,
