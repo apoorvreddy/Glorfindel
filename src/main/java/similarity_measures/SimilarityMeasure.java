@@ -1,5 +1,6 @@
 package similarity_measures;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,4 +9,5 @@ import java.util.List;
 public interface SimilarityMeasure {
 
     double exec(String text1, String text2, List<Object> args);
+
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by apoorv on 16/3/16.
  */
-public class Jaccard implements SimilarityMeasure{
+public class  Jaccard implements SimilarityMeasure{
 
     static Set<String> stopWordList = ResourceClass.getInstance().getStopWords();
 

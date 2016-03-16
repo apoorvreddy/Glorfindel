@@ -11,9 +11,14 @@ import com.google.common.base.Optional;
 import javax.ws.rs.*;
 
 import com.codahale.metrics.annotation.Timed;
+import similarity_measures.Measures;
+import similarity_measures.jaccard.Jaccard;
 import similarity_measures.tree_match.TreeMatch;
+import text_util.PipelineProvider;
 
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/similarity")
@@ -51,9 +56,19 @@ public class AppResource {
         String text2 = requestBody.getText2();
         String similarityFunction = requestBody.getSimilarityFunction();
 
+        double score;
+        if(similarityFunction.equals(Measures.DepTreeKernel.toString()))
+        {
+            TreeMatch match = new TreeMatch();
+            score = match.exec(text1, text2, Arrays.asList(PipelineProvider.getInstance()));
+        }
+        else if(similarityFunction.equals(Measures.Jaccard.toString())){
+            Jaccard match = new Jaccard();
+            score = match.exec(text1, text2, Arrays.asList());
+        }
 
-
-        double score = TreeMatch.computeNormalizedKernel(text1, text2, App.getPipelineProvider());
+        else
+            score = 0;
         return new AppResponse(
                 counter.incrementAndGet(),
                 text1,
