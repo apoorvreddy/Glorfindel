@@ -1,6 +1,14 @@
 # Glorfindel
 
-The Glorfindel project aims to provide sentence similarity measures and fast semantic search for English sentences. This project will incorporate sophisticated similarity measures like Dependency Tree Kernels, Semantic LSA, and ConvNet based phrasal similarity measures.
+The Glorfindel project aims: 
+
+1) to provide sentence similarity measures.
+
+2) fast semantic search for English sentences. This project will incorporate sophisticated similarity measures like Dependency Tree Kernels, Semantic LSA, and ConvNet based phrasal similarity measures. 
+
+3) Dependency Tree patterns based exploration of text corpora.
+
+
 
 Glorfindel will rely on open corpora like WordNet and Paraphrase data from MSR and Paraphrase.org.
 
