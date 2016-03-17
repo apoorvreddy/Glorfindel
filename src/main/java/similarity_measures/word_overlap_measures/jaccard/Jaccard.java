@@ -1,4 +1,4 @@
-package similarity_measures.jaccard;
+package similarity_measures.word_overlap_measures.jaccard;
 
 import similarity_measures.ResourceClass;
 import similarity_measures.SimilarityMeasure;

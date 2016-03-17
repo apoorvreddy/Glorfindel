@@ -3,7 +3,6 @@ package app.resources;
 /**
  * Created by apoorv on 15/3/16.
  */
-import app.App;
 import app.response.AppResponse;
 import com.google.common.base.Optional;
 
@@ -12,12 +11,12 @@ import javax.ws.rs.*;
 
 import com.codahale.metrics.annotation.Timed;
 import similarity_measures.Measures;
-import similarity_measures.jaccard.Jaccard;
+import similarity_measures.word_overlap_measures.jaccard.Jaccard;
+import similarity_measures.word_overlap_measures.phrasal_overlap.PhrasalOverlap;
 import similarity_measures.tree_match.TreeMatch;
 import text_util.PipelineProvider;
 
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -64,6 +63,11 @@ public class AppResource {
         }
         else if(similarityFunction.equals(Measures.Jaccard.toString())){
             Jaccard match = new Jaccard();
+            score = match.exec(text1, text2, Arrays.asList());
+        }
+
+        else if(similarityFunction.equals(Measures.Phrasal.toString())){
+            PhrasalOverlap match = new PhrasalOverlap();
             score = match.exec(text1, text2, Arrays.asList());
         }
 
