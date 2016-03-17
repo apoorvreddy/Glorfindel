@@ -11,3 +11,16 @@ Glorfindel will rely on open corpora like WordNet and Paraphrase data from MSR a
 2) *Jaccard:* Jaccard coefficient between word sets of two sentences.
 
 3) *Phrasal:* Computes a score considering overlap of phrases between two sentences.
+
+
+## Endpoints:
+### Sentence Similarity
+#### Headers
+    Content-Type: application/json
+#### `POST` request
+    /similarity
+    {
+        "text1": "The lion chased the mouse in the savannah",
+        "text2": "The angry lion chased the squeaky mouse",
+        "similarityFunction":"DepTreeKernel"
+    }
