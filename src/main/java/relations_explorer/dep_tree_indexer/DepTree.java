@@ -14,4 +14,12 @@ public class DepTree {
         this.depTreeNodeList = depTreeNodeList;
         this.depTreeEdgeList = depTreeEdgeList;
     }
+
+    public List<DepTreeNode> getDepTreeNodeList() {
+        return depTreeNodeList;
+    }
+
+    public List<DepTreeEdge> getDepTreeEdgeList() {
+        return depTreeEdgeList;
+    }
 }
