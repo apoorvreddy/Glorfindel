@@ -1,5 +1,6 @@
 package relations_explorer.dep_tree_indexer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +9,14 @@ import org.apache.lucene.document.*;
 /**
  * Created by apoorv on 25/3/16.
  */
-public class NodeIndexer {
+public class NodeIndexer extends Indexer{
 
 
     private static String indexName = "node_index";
+
+    public NodeIndexer(String indexDirectoryPath) throws IOException {
+        super(indexDirectoryPath);
+    }
 
     public static List<Document> getDocumentList(List<DepTreeNode> depTreeNodeList){
 

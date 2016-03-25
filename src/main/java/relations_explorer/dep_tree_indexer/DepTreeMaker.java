@@ -53,8 +53,8 @@ public class DepTreeMaker {
             parentNodeIDList.add(indexedWord.index());
         }
 
-
-        DepTreeNode depTreeNode = new DepTreeNode(nodeID, parentNodeIDList, sentenceID, node.word(), node.lemma(), node.tag(), node.get(CoreAnnotations.NamedEntityTagAnnotation.class));
+        DepTreeNode depTreeNode = new DepTreeNode(nodeID, parentNodeIDList, sentenceID, node.word(), node.lemma(),
+                node.tag(), node.get(CoreAnnotations.NamedEntityTagAnnotation.class));
 
         return depTreeNode;
     }

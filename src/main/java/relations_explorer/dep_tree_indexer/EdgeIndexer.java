@@ -5,15 +5,20 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.StringField;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by apoorv on 25/3/16.
  */
-public class EdgeIndexer {
+public class EdgeIndexer extends Indexer {
 
     private static String indexName = "edge_index";
+
+    public EdgeIndexer(String indexDirectoryPath) throws IOException {
+        super(indexDirectoryPath);
+    }
 
     public static List<Document> getDocumentList(List<DepTreeEdge> depTreeEdgeList){
 
