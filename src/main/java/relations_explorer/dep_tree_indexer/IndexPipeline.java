@@ -31,7 +31,7 @@ public class IndexPipeline {
         TextAnnotator annotator = new TextAnnotator(textDocument, pipelineProvider.getPipeline());
         for(CoreMap sentence: annotator.getSentences()){
             SemanticGraph graph = sentence.get(SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class);
-            DepTree depTree = DepTreeMaker.makeDepTree(graph, count.get());
+            DepTree depTree = DepTreeMaker.makeDepTree(graph, count.getAndIncrement());
 
             for(Document document: nodeIndexer.getDocumentList(depTree.getDepTreeNodeList())){
                 nodeIndexer.index(document);
