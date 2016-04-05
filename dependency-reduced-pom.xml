@@ -48,6 +48,7 @@
   </build>
   <properties>
     <dropwizard.version>0.9.2</dropwizard.version>
+    <lucene.version>5.5.0</lucene.version>
   </properties>
 </project>
 

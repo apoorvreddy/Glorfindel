@@ -15,8 +15,8 @@ public class PhrasalOverlap implements SimilarityMeasure{
         Map<String, Phrase> countMap = new HashMap<String, Phrase>();
 
         Vector<String> vector = new Vector(Arrays.asList(tokens));
-        for(int i=0; i<maxNgramLength; i++){
-            for(int j=0; j<tokens.length-i-1; j++){
+        for(int i=1; i<=maxNgramLength; i++){
+            for(int j=0; j<tokens.length-i+1; j++){
 
                 List<String> concatenatedStringList = vector.subList(j, j+i);
                 String concatString = "";
@@ -59,7 +59,13 @@ public class PhrasalOverlap implements SimilarityMeasure{
     }
 
 
-    public static double overlap(String text1, String text2){
+    public static double same_string_overlap(String[] text1Tokens){
+        int n = text1Tokens.length;
+        return (double)(n * (n+1) * (Math.pow(n, 2) + 3*n + 2))/12;
+    }
+
+
+    public static double same_string_overlap(String text1, String text2){
         String[] text1Tokens = text1.split(" ");
         int text1Length = text1Tokens.length;
 
@@ -67,16 +73,12 @@ public class PhrasalOverlap implements SimilarityMeasure{
         int text2Length = text2Tokens.length;
 
         if (text1.equals(text2)){
-
-            int n = text1Length;
-            return (double)(n * (n+1) * (Math.pow(n, 2) + 3*n + 2))/12;
+            return 1;
         }
 
         int maxOverLap = text1Length<text2Length?text1Length:text2Length;
 
-        double denominator = Math.sqrt(
-                computeOverlap(text1Tokens, text1Tokens, text1Length) *
-        computeOverlap(text2Tokens, text2Tokens, text2Length));
+        double denominator = Math.sqrt(same_string_overlap(text1Tokens) * same_string_overlap(text2Tokens));
         int numerator = computeOverlap(text1Tokens, text2Tokens, maxOverLap);
 
         System.out.println("Numerator: " + numerator + ", Denominator: " + denominator);
@@ -86,6 +88,6 @@ public class PhrasalOverlap implements SimilarityMeasure{
 
     @Override
     public double exec(String text1, String text2, List<Object> args) {
-        return overlap(text1, text2);
+        return same_string_overlap(text1, text2);
     }
 }
